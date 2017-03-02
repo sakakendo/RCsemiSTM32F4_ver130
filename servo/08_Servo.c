@@ -8,11 +8,16 @@
 #define __08_SERVO__
 #ifdef __08_SERVO__
 
-//debug用変数　関数に入った回数をカウント
+//debug用変数
+
+//関数に入った回数をカウント
 //irq		servo.c :: TIM2_IRQHandler
+
 //main_g	main.c :: main()
 //while_g	main.c :: while(1)
-extern int irq;
+//pinの状態をglobalに
+//pin_state	servo.c :: TIM2_IRQHandler
+extern int irq,pin_state;
 int main_g=0,while_g=0;
 
 int main(){
