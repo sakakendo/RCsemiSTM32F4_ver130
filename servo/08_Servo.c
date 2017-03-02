@@ -1,26 +1,25 @@
 #include "stm32f4xx.h"
 #include "digitalIO.h"
 #include "motor.h"
-#include "timer.h"		// **‚±‚ê‚ª•K—v
+#include "timer.h"		// **ã“ã‚ŒãŒå¿…è¦
 #include "servo.h"
 
 
 #define __08_SERVO__
 #ifdef __08_SERVO__
 
-//debug—p•Ï”@ŠÖ”‚É“ü‚Á‚½‰ñ”‚ğƒJƒEƒ“ƒg
+//debugç”¨å¤‰æ•°ã€€é–¢æ•°ã«å…¥ã£ãŸå›æ•°ã‚’ã‚«ã‚¦ãƒ³ãƒˆ
 //irq		servo.c :: TIM2_IRQHandler
 //main_g	main.c :: main()
 //while_g	main.c :: while(1)
 extern int irq;
 int main_g=0,while_g=0;
 
-
 int main(){
 	main_g++;
- 	SystemCoreClockUpdate();	// **ƒVƒXƒeƒ€ƒNƒƒbƒN‚ğ‰Šú‰»‚·‚é
+ 	SystemCoreClockUpdate();	// **ã‚·ã‚¹ãƒ†ãƒ ã‚¯ãƒ­ãƒƒã‚¯ã‚’åˆæœŸåŒ–ã™ã‚‹
 	TIM2_CMT_Init();
-	DIO0_Init(0xFF, DIO_MODE_OUT);	// **ƒ‚[ƒ^ƒ|[ƒg‚Æ‚µ‚Äg—p‚·‚éƒsƒ“‚ğo—Í‚Éİ’è‚µ‚Ä‚¨‚­
+	DIO0_Init(0xFF, DIO_MODE_OUT);	// **ãƒ¢ãƒ¼ã‚¿ãƒãƒ¼ãƒˆã¨ã—ã¦ä½¿ç”¨ã™ã‚‹ãƒ”ãƒ³ã‚’å‡ºåŠ›ã«è¨­å®šã—ã¦ãŠã
 	while_g++;
 	while(1)
 	{
