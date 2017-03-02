@@ -15,7 +15,7 @@
 #include "timer.h"		// **これが必要
 #include "xprintf.h"
 
-int irq=0;
+int irq=0,pin_state=0;
 /* 絶対値を求める */
 //motor.hでincludeされているはずだから一応
 #ifndef ABS_VAL
@@ -58,11 +58,14 @@ void TIM2_IRQHandler(){
 	gServo_status[port].cnt[pin]++;
 	if( 0< gServo_status[port].cnt[pin] && gServo_status[port].cnt[pin] <=gServo_status[port].high[pin]){
 		DIO_OutputPin(port,pin,1);
+		pin_state=1;
 	}else if( gServo_status[port].high[pin] <= gServo_status[port].cnt[pin]
 	                 && gServo_status[port].cnt[pin] <=gServo_status[port].high[pin] +gServo_status[port].low[pin] ){
 		DIO_OutputPin(port,pin,0);
+		pin_state=0;
 	}else if( 0< gServo_status[port].cnt[pin] && gServo_status[port].cnt[pin] <=gServo_status[port].high[pin]){
 		gServo_status[port].cnt[pin]=0;
 		DIO_OutputPin(port,pin,0);
+		pin_state=0;
 	}
 }
