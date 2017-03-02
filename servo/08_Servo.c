@@ -25,9 +25,10 @@ int main(){
  	SystemCoreClockUpdate();	// **システムクロックを初期化する
 	TIM2_CMT_Init();
 	DIO0_Init(0xFF, DIO_MODE_OUT);	// **モータポートとして使用するピンを出力に設定しておく
-	while_g++;
+	
 	while(1)
 	{
+		while_g++;
 		Servo_Drive(20,20);
 	}
 	return 0;
