@@ -1,29 +1,28 @@
 /***************************************************************************
- *	@�t�@�C����		:	motor.c
- *	@�T�v		:	DIGITAL-IO�|�[�g�Ń��[�^�𐧌䂷�邽�߂�PWM�������Ɠ�����s���D
- *					�W���̃��[�^�h���C�o���g�����Ƃ�z�肵�Ă���D
- *					�܂��C���ԑ҂��֐���V�X�e���^�C�}���񋟂��Ă���D
- *	@�o�[�W����		:	1.2.0
- *	@�J����		:	�L�l�N�g
- *	@�g�p��		:	STM32F4DISCOVERY, MB_Ver2, Coocox CoIDE
+ *	@ファイル名		:	motor.c
+ *	@概要		:	DIGITAL-IOポートでモータを制御するためのPWM初期化と動作を行う．
+ *					標準のモータドライバを使うことを想定している．
+ *					また，時間待ち関数やシステムタイマも提供している．
+ *	@バージョン		:	1.2.0
+ *	@開発者		:	キネクト
+ *	@使用環境		:	STM32F4DISCOVERY, MB_Ver2, Coocox CoIDE
  **************************************************************************/
 
 #include <stm32f4xx.h>
 #include "digitalIO.h"
 #include "servo.h"
-#include "lcd.h"		// **���ꂪ�K�v
-#include "timer.h"		// **���ꂪ�K�v
+#include "lcd.h"		// **これが必要
+#include "timer.h"		// **これが必要
 #include "xprintf.h"
 
 int irq=0;
-
-/* ��Βl�����߂� */
-//motor.h��include����Ă���͂�������ꉞ
+/* 絶対値を求める */
+//motor.hでincludeされているはずだから一応
 #ifndef ABS_VAL
 #define ABS_VAL(val) ((val) < 0 ? -(val) : (val))
 #endif //ABS_VAL
 
-//debug �pxprintf
+//debug 用xprintf
 #define printd(fmt,...) xprintf("%s %d %s",__func__,__LINE__,fmt)
 _servo_status_t gServo_status[3]={};
 
@@ -34,7 +33,7 @@ void Servo_Drive(short high,short low){
 }
 
 void TIM2_CMT_Init(){
-	//1kHz = 1ms�ł̊�����
+	//1kHz = 1msでの割込み
     RCC->APB1ENR |= RCC_APB1ENR_TIM2EN;
 	TIM2->PSC=100-1;
 	TIM2->ARR=840-1;
@@ -48,6 +47,7 @@ void TIM2_CMT_Init(){
 void TIM2_IRQHandler(){
 	int port=0,pin=0;
 	TIM2->SR=0;
+	irq++;
 	//static int i=0;
 	//i++;
 /*	for(port=0;port<3;port++){
