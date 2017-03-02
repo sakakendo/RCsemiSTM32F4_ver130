@@ -5,7 +5,7 @@
 #include "servo.h"
 
 
-#define __08_SERVO__
+//#define __08_SERVO__
 #ifdef __08_SERVO__
 
 //debug用変数
